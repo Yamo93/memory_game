@@ -1,0 +1,11 @@
+#board {
+    width: fit-content;
+    margin: 20px auto;
+    display: flex;
+}
+
+.word {
+    margin: 0;
+    padding: 15px;
+    border: 1px solid black;
+}
