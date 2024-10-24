@@ -5,11 +5,12 @@
 }
 
 .word-wrapper {
-    width: 70px;
-    height: 70px;
+    width: 80px;
+    height: 80px;
     margin: 0;
-    padding: 15px;
+    padding: 10px;
     border: 1px solid black;
     cursor: pointer;
     text-align: center;
+    word-wrap: break-word;
 }

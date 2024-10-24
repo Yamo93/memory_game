@@ -4,6 +4,9 @@ import { words } from "./words.js";
 const BOARD_WIDTH = 4;
 const BOARD_HEIGHT = 4;
 
+const playerPosition: [number, number] = [-1, -1];
+const foundWords: Set<string> = new Set();
+
 if (BOARD_WIDTH % 2 === 1 && BOARD_HEIGHT % 2 === 1) {
     throw new Error("Odd width and height, invalid board size");
 }
@@ -15,11 +18,10 @@ for (let i = 0; i < (BOARD_WIDTH * BOARD_HEIGHT) / 2; i++) {
     randomWords.push(word, word);
 }
 
+// shuffle array
 for (let i = randomWords.length - 1; i > 0; i--) {
-    // Generate a random index between 0 and i
     const j = Math.floor(Math.random() * (i + 1));
 
-    // Swap elements at i and j
     [randomWords[i], randomWords[j]] = [randomWords[j], randomWords[i]];
 }
 
@@ -34,16 +36,11 @@ for (let i = 0; i < BOARD_HEIGHT; i++) {
     }
 }
 
-console.log(board);
 render(board);
 
-// create a player state
-
-// render board
-
-// add event listeners
-
 function render(board: string[][]): void {
+    document.body.innerHTML = "";
+
     const boardEl = document.createElement("div");
     boardEl.setAttribute("id", "board");
 
@@ -57,16 +54,36 @@ function render(board: string[][]): void {
             const wordWrapper = document.createElement("div");
             wordWrapper.addEventListener("click", () => {
                 const child = wordWrapper.firstElementChild;
-                if (child && child instanceof HTMLElement) {
-                    child.style.visibility = "visible";
+                if (!child || !(child instanceof HTMLElement)) throw new Error("Child is missing or not an element");
+                
+                
+                if (playerPosition[0] < 0 && playerPosition[1] < 0) {
+                    playerPosition[0] = i;
+                    playerPosition[1] = j;
+                    hideAllWords();
+                } else if (board[playerPosition[0]][playerPosition[1]] === word) {
+                    // store found word
+                    foundWords.add(word);
+                    
+                    // clear state
+                    playerPosition[0] = -1;
+                    playerPosition[1] = -1;
+                } else if (playerPosition[0] === i && playerPosition[1] === j) {
+                    // do nothing, invalid
+                } else {
+                    // clear state
+                    playerPosition[0] = -1;
+                    playerPosition[1] = -1;
                 }
+                child.style.visibility = "visible";
+                evaluateWin();
             });
 
             wordWrapper.classList.add("word-wrapper");
             const wordEl = document.createElement("p");
             wordWrapper.appendChild(wordEl);
             wordEl.textContent = word;
-            wordEl.style.visibility = "hidden";
+            if (!foundWords.has(word)) wordEl.style.visibility = "hidden";
             wordEl.classList.add("word");
             rowEl.appendChild(wordWrapper);
         }
@@ -74,4 +91,19 @@ function render(board: string[][]): void {
     }
 
     document.body.appendChild(boardEl);
+}
+
+function hideAllWords(): void {
+    document.querySelectorAll(".word").forEach(wordEl => {
+        if (wordEl instanceof HTMLElement) {
+            const text = wordEl.textContent;
+            if (text && !foundWords.has(text)) {
+                wordEl.style.visibility = "hidden";
+            }
+        }
+    })
+}
+
+function evaluateWin(): void {
+    console.log(foundWords);
 }
