@@ -15,6 +15,13 @@ for (let i = 0; i < (BOARD_WIDTH * BOARD_HEIGHT) / 2; i++) {
     randomWords.push(word, word);
 }
 
+for (let i = randomWords.length - 1; i > 0; i--) {
+    // Generate a random index between 0 and i
+    const j = Math.floor(Math.random() * (i + 1));
+
+    // Swap elements at i and j
+    [randomWords[i], randomWords[j]] = [randomWords[j], randomWords[i]];
+}
 
 
 console.log(randomWords);
