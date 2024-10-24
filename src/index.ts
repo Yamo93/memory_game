@@ -36,6 +36,10 @@ function render(board: string[][]): void {
             const word = row[j];
             const wordWrapper = document.createElement("div");
             wordWrapper.addEventListener("click", () => {
+                if (playerWins()) {
+                    return;
+                }
+
                 const child = wordWrapper.firstElementChild;
                 if (!child || !(child instanceof HTMLElement)) throw new Error("Child is missing or not an element");
                 
