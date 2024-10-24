@@ -30,7 +30,6 @@ function render(board: string[][]): void {
     for (let i = 0; i < board.length; i++) {
         const row = board[i];
         const rowEl = document.createElement("div");
-        rowEl.setAttribute("id", "row-" + i);
         rowEl.classList.add("row");
         for (let j = 0; j < row.length; j++) {
             const word = row[j];
@@ -124,6 +123,7 @@ function generateBoard(): void {
     
     for (let i = 0; i < NO_OF_WORDS; i++) {
         const word = words[Math.floor(Math.random() * words.length)];
+        // FIXME: if the generated word already exists, generate a new one
         randomWords.push(word, word);
     }
     
