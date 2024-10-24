@@ -1,4 +1,4 @@
-import { words } from "./words.js";
+import { words } from "./words";
 
 // create a board with random data
 const BOARD_WIDTH = 4;
