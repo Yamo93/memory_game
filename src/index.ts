@@ -12,7 +12,7 @@ const board: string[][] = [];
 const randomWords: string[] = [];
 for (let i = 0; i < (BOARD_WIDTH * BOARD_HEIGHT) / 2; i++) {
     const word = words[Math.floor(Math.random() * words.length)];
-    randomWords.push(word);
+    randomWords.push(word, word);
 }
 
 
