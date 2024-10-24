@@ -55,6 +55,13 @@ function render(board: string[][]): void {
         for (let j = 0; j < row.length; j++) {
             const word = row[j];
             const wordWrapper = document.createElement("div");
+            wordWrapper.addEventListener("click", () => {
+                const child = wordWrapper.firstElementChild;
+                if (child && child instanceof HTMLElement) {
+                    child.style.visibility = "visible";
+                }
+            });
+
             wordWrapper.classList.add("word-wrapper");
             const wordEl = document.createElement("p");
             wordWrapper.appendChild(wordEl);
