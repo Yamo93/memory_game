@@ -34,6 +34,7 @@ for (let i = 0; i < BOARD_HEIGHT; i++) {
     }
 }
 
+console.log(board);
 render(board);
 
 // create a player state
@@ -53,10 +54,14 @@ function render(board: string[][]): void {
         rowEl.classList.add("row");
         for (let j = 0; j < row.length; j++) {
             const word = row[j];
+            const wordWrapper = document.createElement("div");
+            wordWrapper.classList.add("word-wrapper");
             const wordEl = document.createElement("p");
+            wordWrapper.appendChild(wordEl);
             wordEl.textContent = word;
+            wordEl.style.visibility = "hidden";
             wordEl.classList.add("word");
-            rowEl.appendChild(wordEl);
+            rowEl.appendChild(wordWrapper);
         }
         boardEl.appendChild(rowEl);
     }
