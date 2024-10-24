@@ -1,4 +1,4 @@
-export const words: string[] = [
+export const words = [
     "Algorithm",
     "Array",
     "Bug",
@@ -199,5 +199,5 @@ export const words: string[] = [
     "Framework",
     "Template",
     "Snippet"
-  ];
-  
+];
+//# sourceMappingURL=words.js.map
