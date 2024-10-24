@@ -4,7 +4,7 @@ import { words } from "./words.js";
 const BOARD_WIDTH = 6;
 const BOARD_HEIGHT = 6;
 
-if (BOARD_HEIGHT % 2 === 1 && BOARD_WIDTH % 2 === 1) {
+if (BOARD_WIDTH % 2 === 1 && BOARD_HEIGHT % 2 === 1) {
     throw new Error("Odd width and height, invalid board size");
 }
 
@@ -13,10 +13,11 @@ const randomWords: string[] = [];
 for (let i = 0; i < (BOARD_WIDTH * BOARD_HEIGHT) / 2; i++) {
     const word = words[Math.floor(Math.random() * words.length)];
     randomWords.push(word);
-        }
-    }
-    board.push(row);
 }
+
+
+
+console.log(randomWords);
 
 console.log(board);
 
