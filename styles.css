@@ -14,3 +14,12 @@
     text-align: center;
     word-wrap: break-word;
 }
+
+.message {
+    text-align: center;
+}
+
+button {
+    display: block;
+    margin: auto;
+}

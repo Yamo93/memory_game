@@ -4,8 +4,11 @@ import { words } from "./words.js";
 const BOARD_WIDTH = 4;
 const BOARD_HEIGHT = 4;
 
+const NO_OF_WORDS = (BOARD_WIDTH * BOARD_HEIGHT) / 2;
+
 const playerPosition: [number, number] = [-1, -1];
 const foundWords: Set<string> = new Set();
+
 
 if (BOARD_WIDTH % 2 === 1 && BOARD_HEIGHT % 2 === 1) {
     throw new Error("Odd width and height, invalid board size");
@@ -13,28 +16,8 @@ if (BOARD_WIDTH % 2 === 1 && BOARD_HEIGHT % 2 === 1) {
 
 const board: string[][] = [];
 const randomWords: string[] = [];
-for (let i = 0; i < (BOARD_WIDTH * BOARD_HEIGHT) / 2; i++) {
-    const word = words[Math.floor(Math.random() * words.length)];
-    randomWords.push(word, word);
-}
 
-// shuffle array
-for (let i = randomWords.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-
-    [randomWords[i], randomWords[j]] = [randomWords[j], randomWords[i]];
-}
-
-for (let i = 0; i < BOARD_HEIGHT; i++) {
-    const row: string[] = [];
-    board.push(row);
-    for (let j = 0; j < BOARD_WIDTH; j++) {
-        const randomWord = randomWords.pop();
-        if (randomWord) {
-            row.push(randomWord);
-        }
-    }
-}
+generateBoard();
 
 render(board);
 
@@ -76,7 +59,9 @@ function render(board: string[][]): void {
                     playerPosition[1] = -1;
                 }
                 child.style.visibility = "visible";
-                evaluateWin();
+                if (playerWins()) {
+                    showWinMessage();
+                }
             });
 
             wordWrapper.classList.add("word-wrapper");
@@ -90,7 +75,13 @@ function render(board: string[][]): void {
         boardEl.appendChild(rowEl);
     }
 
+    const restartButtonEl = document.createElement("button");
+    restartButtonEl.textContent = "Restart";
+    restartButtonEl.addEventListener("click", () => {
+        clear();
+    });
     document.body.appendChild(boardEl);
+    document.body.appendChild(restartButtonEl);
 }
 
 function hideAllWords(): void {
@@ -104,6 +95,49 @@ function hideAllWords(): void {
     })
 }
 
-function evaluateWin(): void {
-    console.log(foundWords);
+function playerWins(): boolean {
+    return foundWords.size === NO_OF_WORDS;
+}
+
+function showWinMessage(): void {
+    const winMessageEl = document.createElement("p");
+    winMessageEl.classList.add("message");
+    winMessageEl.textContent = "Congratulations, you won!";
+    document.body.appendChild(winMessageEl);
+}
+
+function clear(): void {
+    foundWords.clear();
+    playerPosition[0] = -1;
+    playerPosition[1] = -1;
+    hideAllWords();
+    generateBoard();
+    render(board);
+}
+
+function generateBoard(): void {
+    board.length = 0;
+    
+    for (let i = 0; i < NO_OF_WORDS; i++) {
+        const word = words[Math.floor(Math.random() * words.length)];
+        randomWords.push(word, word);
+    }
+    
+    // shuffle array
+    for (let i = randomWords.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+    
+        [randomWords[i], randomWords[j]] = [randomWords[j], randomWords[i]];
+    }
+    
+    for (let i = 0; i < BOARD_HEIGHT; i++) {
+        const row: string[] = [];
+        board.push(row);
+        for (let j = 0; j < BOARD_WIDTH; j++) {
+            const randomWord = randomWords.pop();
+            if (randomWord) {
+                row.push(randomWord);
+            }
+        }
+    }
 }
