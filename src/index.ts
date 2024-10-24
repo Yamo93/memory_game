@@ -9,13 +9,10 @@ if (BOARD_HEIGHT % 2 === 1 && BOARD_WIDTH % 2 === 1) {
 }
 
 const board: string[][] = [];
-for (let i = 0; i < BOARD_HEIGHT; i++) {
-    const row: string[] = [];
-    for (let j = 0; j < BOARD_WIDTH; j++) {
-        const word = words[Math.floor(Math.random() * words.length - 1)];
-        if (word) {
-            // push doesnt work, allocate this to two random available places
-            row.push(word);
+const randomWords: string[] = [];
+for (let i = 0; i < (BOARD_WIDTH * BOARD_HEIGHT) / 2; i++) {
+    const word = words[Math.floor(Math.random() * words.length)];
+    randomWords.push(word);
         }
     }
     board.push(row);
