@@ -15,7 +15,7 @@ export class MemoryGame {
         }
     }
 
-    board(): ReadonlyArray<string[]> {
+    get board(): ReadonlyArray<string[]> {
         return this._board;
     }
 
