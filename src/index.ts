@@ -41,18 +41,18 @@ function render(board: string[][]): void {
 
                 const child = wordWrapper.firstElementChild;
                 if (!child || !(child instanceof HTMLElement)) throw new Error("Child is missing or not an element");
-                
-                const notSelected = playerPosition[0] < 0 && playerPosition[1] < 0;
-                const wordIsMatching = board[playerPosition[0]][playerPosition[1]] === word;
+
+                const selected = playerPosition[0] >= 0 && playerPosition[1] >= 0;
+                const wordIsMatching = selected && board[playerPosition[0]][playerPosition[1]] === word;
                 const samePositionSelected = playerPosition[0] === i && playerPosition[1] === j;
-                if (notSelected) {
+                if (!selected) {
                     playerPosition[0] = i;
                     playerPosition[1] = j;
                     hideAllWords();
                 } else if (wordIsMatching) {
                     // store found word
                     foundWords.add(word);
-                    
+
                     // clear state
                     playerPosition[0] = -1;
                     playerPosition[1] = -1;
@@ -122,20 +122,20 @@ function clear(): void {
 
 function generateBoard(): void {
     board.length = 0;
-    
+
     for (let i = 0; i < NO_OF_WORDS; i++) {
         const word = words[Math.floor(Math.random() * words.length)];
         // FIXME: if the generated word already exists, generate a new one
         randomWords.push(word, word);
     }
-    
+
     // shuffle array
     for (let i = randomWords.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
-    
+
         [randomWords[i], randomWords[j]] = [randomWords[j], randomWords[i]];
     }
-    
+
     for (let i = 0; i < BOARD_HEIGHT; i++) {
         const row: string[] = [];
         board.push(row);
