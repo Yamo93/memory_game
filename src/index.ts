@@ -124,8 +124,10 @@ function generateBoard(): void {
     board.length = 0;
 
     for (let i = 0; i < NO_OF_WORDS; i++) {
-        const word = words[Math.floor(Math.random() * words.length)];
-        // FIXME: if the generated word already exists, generate a new one
+        let word = words[Math.floor(Math.random() * words.length)];
+        while (randomWords.includes(word)) {
+            word = words[Math.floor(Math.random() * words.length)];
+        }
         randomWords.push(word, word);
     }
 
@@ -135,7 +137,7 @@ function generateBoard(): void {
 
         [randomWords[i], randomWords[j]] = [randomWords[j], randomWords[i]];
     }
-
+    
     for (let i = 0; i < BOARD_HEIGHT; i++) {
         const row: string[] = [];
         board.push(row);
