@@ -43,8 +43,8 @@ function render(board: string[][]): void {
                 if (!child || !(child instanceof HTMLElement)) throw new Error("Child is missing or not an element");
 
                 const selected = playerPosition[0] >= 0 && playerPosition[1] >= 0;
-                const wordIsMatching = selected && board[playerPosition[0]][playerPosition[1]] === word;
                 const samePositionSelected = playerPosition[0] === i && playerPosition[1] === j;
+                const wordIsMatching = !samePositionSelected && selected && board[playerPosition[0]][playerPosition[1]] === word;
                 if (!selected) {
                     playerPosition[0] = i;
                     playerPosition[1] = j;
