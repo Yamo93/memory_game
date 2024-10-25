@@ -42,19 +42,21 @@ function render(board: string[][]): void {
                 const child = wordWrapper.firstElementChild;
                 if (!child || !(child instanceof HTMLElement)) throw new Error("Child is missing or not an element");
                 
-                
-                if (playerPosition[0] < 0 && playerPosition[1] < 0) {
+                const notSelected = playerPosition[0] < 0 && playerPosition[1] < 0;
+                const wordIsMatching = board[playerPosition[0]][playerPosition[1]] === word;
+                const samePositionSelected = playerPosition[0] === i && playerPosition[1] === j;
+                if (notSelected) {
                     playerPosition[0] = i;
                     playerPosition[1] = j;
                     hideAllWords();
-                } else if (board[playerPosition[0]][playerPosition[1]] === word) {
+                } else if (wordIsMatching) {
                     // store found word
                     foundWords.add(word);
                     
                     // clear state
                     playerPosition[0] = -1;
                     playerPosition[1] = -1;
-                } else if (playerPosition[0] === i && playerPosition[1] === j) {
+                } else if (samePositionSelected) {
                     // do nothing, invalid
                 } else {
                     // clear state
