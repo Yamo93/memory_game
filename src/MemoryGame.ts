@@ -1,18 +1,18 @@
 import { words } from "./words";
 
 export class MemoryGame {
-    private readonly BOARD_WIDTH = 4;
-    private readonly BOARD_HEIGHT = 4;
-    private readonly NO_OF_WORDS = (this.BOARD_WIDTH * this.BOARD_HEIGHT) / 2;
+    private readonly wordCount: number;;
     private readonly playerPosition: [number, number] = [-1, -1];
     private readonly foundWords: Set<string> = new Set();
     private readonly _board: string[][] = [];
     private readonly randomWords: string[] = [];
 
-    constructor() {
-        if (this.BOARD_WIDTH % 2 === 1 && this.BOARD_HEIGHT % 2 === 1) {
+    constructor(readonly boardWidth = 4, readonly boardHeight = 4) {
+        if (this.boardWidth % 2 === 1 && this.boardHeight % 2 === 1) {
             throw new Error("Odd width and height, invalid board size");
         }
+
+        this.wordCount = (this.boardWidth * this.boardHeight) / 2;
     }
 
     get board(): ReadonlyArray<string[]> {
@@ -27,10 +27,10 @@ export class MemoryGame {
     }
 
     private populateBoardWithRandomWords(): void {
-        for (let i = 0; i < this.BOARD_HEIGHT; i++) {
+        for (let i = 0; i < this.boardHeight; i++) {
             const row: string[] = [];
             this._board.push(row);
-            for (let j = 0; j < this.BOARD_WIDTH; j++) {
+            for (let j = 0; j < this.boardWidth; j++) {
                 const randomWord = this.randomWords.pop();
                 if (randomWord) {
                     row.push(randomWord);
@@ -47,7 +47,7 @@ export class MemoryGame {
     }
 
     private generateRandomWords(): void {
-        for (let i = 0; i < this.NO_OF_WORDS; i++) {
+        for (let i = 0; i < this.wordCount; i++) {
             let word = words[Math.floor(Math.random() * words.length)];
             while (this.randomWords.includes(word)) {
                 word = words[Math.floor(Math.random() * words.length)];
@@ -66,7 +66,7 @@ export class MemoryGame {
     }
 
     playerWins(): boolean {
-        return this.foundWords.size === this.NO_OF_WORDS;
+        return this.foundWords.size === this.wordCount;
     }
 
     updatePlayerPosition(word: string, { i, j }: { i: number, j: number }): void {
