@@ -70,23 +70,21 @@ export class MemoryGame {
     }
 
     updatePlayerPosition(word: string, { i, j }: { i: number, j: number }): void {
-        const samePositionSelected = this.playerPosition[0] === i && this.playerPosition[1] === j;
-        const wordIsMatching = !samePositionSelected && this.isWordSelected() && this._board[this.playerPosition[0]][this.playerPosition[1]] === word;
         if (!this.isWordSelected()) {
             this.playerPosition[0] = i;
             this.playerPosition[1] = j;
-        } else if (wordIsMatching) {
-            // store found word
-            this.foundWords.add(word);
-
-            // clear state
-            this.clearPlayerPosition();
-        } else if (samePositionSelected) {
-            // do nothing, invalid
-        } else {
-            // clear state
-            this.clearPlayerPosition();
+            return;
         }
+
+        if (this.isSameWordSelected(i, j)) {
+            return;
+        }
+
+        if (this.isWordMatching(word)) {
+            this.foundWords.add(word);
+        }
+
+        this.clearPlayerPosition();
     }
 
     private clearPlayerPosition(): void {
@@ -100,5 +98,21 @@ export class MemoryGame {
 
     hasFoundWord(word: string): boolean {
         return this.foundWords.has(word);
+    }
+
+    private isSameWordSelected(i: number, j: number): boolean {
+        if (!this.isWordSelected()) {
+            return false;
+        }
+
+        return this.playerPosition[0] === i && this.playerPosition[1] === j;
+    }
+
+    private isWordMatching(word: string): boolean {
+        if (!this.isWordSelected()) {
+            return false;
+        }
+
+        return this._board[this.playerPosition[0]][this.playerPosition[1]] === word;
     }
 }
