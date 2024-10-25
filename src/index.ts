@@ -39,16 +39,12 @@ function render(board: string[][]): void {
                     return;
                 }
 
-                const child = wordWrapper.firstElementChild;
-                if (!child || !(child instanceof HTMLElement)) throw new Error("Child is missing or not an element");
-
                 const selected = playerPosition[0] >= 0 && playerPosition[1] >= 0;
                 const samePositionSelected = playerPosition[0] === i && playerPosition[1] === j;
                 const wordIsMatching = !samePositionSelected && selected && board[playerPosition[0]][playerPosition[1]] === word;
                 if (!selected) {
                     playerPosition[0] = i;
                     playerPosition[1] = j;
-                    hideAllWords();
                 } else if (wordIsMatching) {
                     // store found word
                     foundWords.add(word);
@@ -63,7 +59,18 @@ function render(board: string[][]): void {
                     playerPosition[0] = -1;
                     playerPosition[1] = -1;
                 }
+                
+                if (selected) {
+                    hideAllWords();
+                }
+
+                const child = wordWrapper.firstElementChild;
+                if (!child || !(child instanceof HTMLElement)) {
+                    throw new Error("Child is missing or not an element");
+                }
+
                 child.style.visibility = "visible";
+
                 if (playerWins()) {
                     showWinMessage();
                 }
