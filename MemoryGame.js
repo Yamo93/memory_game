@@ -12,7 +12,7 @@ export class MemoryGame {
             throw new Error("Odd width and height, invalid board size");
         }
     }
-    board() {
+    get board() {
         return this._board;
     }
     generateBoard() {
@@ -53,40 +53,46 @@ export class MemoryGame {
     }
     clear() {
         this.foundWords.clear();
-        this.playerPosition[0] = -1;
-        this.playerPosition[1] = -1;
+        this.clearPlayerPosition();
     }
     playerWins() {
         return this.foundWords.size === this.NO_OF_WORDS;
     }
     updatePlayerPosition(word, { i, j }) {
-        const samePositionSelected = this.playerPosition[0] === i && this.playerPosition[1] === j;
-        const wordIsMatching = !samePositionSelected && this.isWordSelected() && this._board[this.playerPosition[0]][this.playerPosition[1]] === word;
         if (!this.isWordSelected()) {
             this.playerPosition[0] = i;
             this.playerPosition[1] = j;
+            return;
         }
-        else if (wordIsMatching) {
-            // store found word
+        if (this.isSameWordSelected(i, j)) {
+            return;
+        }
+        if (this.isWordMatching(word)) {
             this.foundWords.add(word);
-            // clear state
-            this.playerPosition[0] = -1;
-            this.playerPosition[1] = -1;
         }
-        else if (samePositionSelected) {
-            // do nothing, invalid
-        }
-        else {
-            // clear state
-            this.playerPosition[0] = -1;
-            this.playerPosition[1] = -1;
-        }
+        this.clearPlayerPosition();
+    }
+    clearPlayerPosition() {
+        this.playerPosition[0] = -1;
+        this.playerPosition[1] = -1;
     }
     isWordSelected() {
         return this.playerPosition[0] >= 0 && this.playerPosition[1] >= 0;
     }
     hasFoundWord(word) {
         return this.foundWords.has(word);
+    }
+    isSameWordSelected(i, j) {
+        if (!this.isWordSelected()) {
+            return false;
+        }
+        return this.playerPosition[0] === i && this.playerPosition[1] === j;
+    }
+    isWordMatching(word) {
+        if (!this.isWordSelected()) {
+            return false;
+        }
+        return this._board[this.playerPosition[0]][this.playerPosition[1]] === word;
     }
 }
 //# sourceMappingURL=MemoryGame.js.map

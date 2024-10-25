@@ -6,8 +6,8 @@ export class Ui {
         document.body.innerHTML = "";
         const boardEl = document.createElement("div");
         boardEl.setAttribute("id", "board");
-        for (let i = 0; i < this.memoryGame.board().length; i++) {
-            const row = this.memoryGame.board()[i];
+        for (let i = 0; i < this.memoryGame.board.length; i++) {
+            const row = this.memoryGame.board[i];
             const rowEl = document.createElement("div");
             rowEl.classList.add("row");
             for (let j = 0; j < row.length; j++) {
