@@ -62,8 +62,7 @@ export class MemoryGame {
 
     clear(): void {
         this.foundWords.clear();
-        this.playerPosition[0] = -1;
-        this.playerPosition[1] = -1;
+        this.clearPlayerPosition();
     }
 
     playerWins(): boolean {
@@ -81,15 +80,18 @@ export class MemoryGame {
             this.foundWords.add(word);
 
             // clear state
-            this.playerPosition[0] = -1;
-            this.playerPosition[1] = -1;
+            this.clearPlayerPosition();
         } else if (samePositionSelected) {
             // do nothing, invalid
         } else {
             // clear state
-            this.playerPosition[0] = -1;
-            this.playerPosition[1] = -1;
+            this.clearPlayerPosition();
         }
+    }
+
+    private clearPlayerPosition(): void {
+        this.playerPosition[0] = -1;
+        this.playerPosition[1] = -1;
     }
 
     isWordSelected(): boolean {
