@@ -35,7 +35,7 @@ export class Ui {
         restartButtonEl.textContent = "Restart";
         restartButtonEl.addEventListener("click", () => {
             this.memoryGame.clear();
-            this.hideAllWords();
+            this.hideWords();
             this.memoryGame.generateBoard();
             this.render();
         });
@@ -43,7 +43,7 @@ export class Ui {
         document.body.appendChild(restartButtonEl);
     }
 
-    private hideAllWords(): void {
+    private hideWords(): void {
         document.querySelectorAll(".word").forEach(wordEl => {
             if (wordEl instanceof HTMLElement) {
                 const text = wordEl.textContent;
@@ -66,10 +66,10 @@ export class Ui {
             return;
         }
     
-        this.memoryGame.update(word, { i, j });
+        this.memoryGame.updatePlayerPosition(word, { i, j });
     
         if (this.memoryGame.isWordSelected()) {
-            this.hideAllWords();
+            this.hideWords();
         }
     
         const child = wordWrapper.firstElementChild;

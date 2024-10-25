@@ -20,22 +20,13 @@ export class MemoryGame {
     }
 
     generateBoard(): void {
-        this._board.length = 0;
-        for (let i = 0; i < this.NO_OF_WORDS; i++) {
-            let word = words[Math.floor(Math.random() * words.length)];
-            while (this.randomWords.includes(word)) {
-                word = words[Math.floor(Math.random() * words.length)];
-            }
-            this.randomWords.push(word, word);
-        }
+        this.clearBoard();
+        this.generateRandomWords();
+        this.shuffleRandomWords();
+        this.populateBoardWithRandomWords();
+    }
 
-        // shuffle array
-        for (let i = this.randomWords.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-
-            [this.randomWords[i], this.randomWords[j]] = [this.randomWords[j], this.randomWords[i]];
-        }
-
+    private populateBoardWithRandomWords(): void {
         for (let i = 0; i < this.BOARD_HEIGHT; i++) {
             const row: string[] = [];
             this._board.push(row);
@@ -48,6 +39,27 @@ export class MemoryGame {
         }
     }
 
+    private shuffleRandomWords(): void {
+        for (let i = this.randomWords.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [this.randomWords[i], this.randomWords[j]] = [this.randomWords[j], this.randomWords[i]];
+        }
+    }
+
+    private generateRandomWords(): void {
+        for (let i = 0; i < this.NO_OF_WORDS; i++) {
+            let word = words[Math.floor(Math.random() * words.length)];
+            while (this.randomWords.includes(word)) {
+                word = words[Math.floor(Math.random() * words.length)];
+            }
+            this.randomWords.push(word, word);
+        }
+    }
+
+    private clearBoard(): void {
+        this._board.length = 0;
+    }
+
     clear(): void {
         this.foundWords.clear();
         this.playerPosition[0] = -1;
@@ -58,7 +70,7 @@ export class MemoryGame {
         return this.foundWords.size === this.NO_OF_WORDS;
     }
 
-    update(word: string, { i, j }: { i: number, j: number}): void {
+    updatePlayerPosition(word: string, { i, j }: { i: number, j: number }): void {
         const samePositionSelected = this.playerPosition[0] === i && this.playerPosition[1] === j;
         const wordIsMatching = !samePositionSelected && this.isWordSelected() && this._board[this.playerPosition[0]][this.playerPosition[1]] === word;
         if (!this.isWordSelected()) {
