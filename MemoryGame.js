@@ -1,16 +1,17 @@
 import { words } from "./words.js";
 export class MemoryGame {
-    constructor() {
-        this.BOARD_WIDTH = 4;
-        this.BOARD_HEIGHT = 4;
-        this.NO_OF_WORDS = (this.BOARD_WIDTH * this.BOARD_HEIGHT) / 2;
+    ;
+    constructor(boardWidth = 4, boardHeight = 4) {
+        this.boardWidth = boardWidth;
+        this.boardHeight = boardHeight;
         this.playerPosition = [-1, -1];
         this.foundWords = new Set();
         this._board = [];
         this.randomWords = [];
-        if (this.BOARD_WIDTH % 2 === 1 && this.BOARD_HEIGHT % 2 === 1) {
+        if (this.boardWidth % 2 === 1 && this.boardHeight % 2 === 1) {
             throw new Error("Odd width and height, invalid board size");
         }
+        this.wordCount = (this.boardWidth * this.boardHeight) / 2;
     }
     get board() {
         return this._board;
@@ -22,10 +23,10 @@ export class MemoryGame {
         this.populateBoardWithRandomWords();
     }
     populateBoardWithRandomWords() {
-        for (let i = 0; i < this.BOARD_HEIGHT; i++) {
+        for (let i = 0; i < this.boardHeight; i++) {
             const row = [];
             this._board.push(row);
-            for (let j = 0; j < this.BOARD_WIDTH; j++) {
+            for (let j = 0; j < this.boardWidth; j++) {
                 const randomWord = this.randomWords.pop();
                 if (randomWord) {
                     row.push(randomWord);
@@ -40,7 +41,7 @@ export class MemoryGame {
         }
     }
     generateRandomWords() {
-        for (let i = 0; i < this.NO_OF_WORDS; i++) {
+        for (let i = 0; i < this.wordCount; i++) {
             let word = words[Math.floor(Math.random() * words.length)];
             while (this.randomWords.includes(word)) {
                 word = words[Math.floor(Math.random() * words.length)];
@@ -56,7 +57,7 @@ export class MemoryGame {
         this.clearPlayerPosition();
     }
     playerWins() {
-        return this.foundWords.size === this.NO_OF_WORDS;
+        return this.foundWords.size === this.wordCount;
     }
     updatePlayerPosition(word, { i, j }) {
         if (!this.isWordSelected()) {
